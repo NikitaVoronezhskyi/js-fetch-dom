@@ -59,37 +59,17 @@
         waitDiv.style.display = 'none'
       }
     }
-    // получить ссылку на объект узла кноки в DOM
     const getTodosButton = document.getElementById('async-demo__get-todos-button')
-    // установить обработчик события click на кнопку
     getTodosButton.addEventListener('click', (ev) => {
-      // fetch('http://jsonplaceholder.typicode.com/todos').then(
-      // TODO вынести ниже приведенный код в отдельную функцию,
-      // а здесь ее вызвать
+      fetchApi(true)
       toggleWait(true)
-      fetch('http://localhost:4000/api/items').then(
+       function fetchApi (inUse) {fetch('http://localhost:4000/api/items').then(
         (response) => {
-          // преобразовать json-строку в js-объект
-          // и сделать возвращаемым значением промиса (оболочки асинхронной задачи)
           return response.json()
         }
       ).then(
         (response) => {
           console.log(response)
-          /* const resultDiv = document.getElementById('async-demo__result-block')
-          resultDiv.innerText = ''
-          response.forEach(todo => {
-            const todoDiv = document.createElement('div')
-            if (todo.comleted) {
-              todoDiv.style.backgroundColor = '#cfc'
-            } else {
-              todoDiv.style.backgroundColor = '#fcc'
-            }
-            const todoTitleH4 = document.createElement('h4')
-            todoTitleH4.innerText = todo.title
-            todoDiv.appendChild(todoTitleH4)
-            resultDiv.appendChild(todoDiv)
-          }) */
           const resultDiv = document.getElementById('async-demo__result-block')
           resultDiv.innerText = ''
           response.data.forEach(todo => {
@@ -108,11 +88,18 @@
             todoCloseButton.innerText = 'X'
             todoCloseButton.addEventListener('click', (ev) => {
               const result = confirm('ToDo Item Will be Deleted. Continue?')
-              console.log('delete', result)
+              const fetchDelete = fetch('http://localhost:4000/api/items/1', {
+                    method: 'DELETE',
+                  })
+                  if (result===true) {
+                    return fetchDelete
+                  }
+                  
               // TODO если result === true -
               // выполнить fetch с методом delete и шаблоном адреса:
               // http://localhost:4000/api/items/{id}
             })
+
             todoTitleH4.innerText = "Title: "+ todo.title
             todoDescriptionP.innerText = "Description: "+ todo.description
             todoDateSpan.innerText = "Date: "+ (new Date(todo.date)).toLocaleString('ru')
@@ -128,7 +115,7 @@
         }
       ).catch(reason => alert(reason))
       .finally(() => toggleWait(false))
-    })
+    }
 
     const addTodoForm = document.getElementById('async-demo__add-todo-form')
     addTodoForm.addEventListener('submit', (ev) => {
@@ -154,6 +141,7 @@
       }).catch(reason => alert(reason))
       .finally(() => toggleWait(false))
     })
+  })
   </script>
 </body>
 </html>
