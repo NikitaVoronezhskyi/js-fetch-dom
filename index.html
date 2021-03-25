@@ -51,6 +51,8 @@
     <div id="async-demo__result-block"></div>
   </div>
   <script>
+    /* functions */
+    // show wait
     function toggleWait (show) {
       const waitDiv = document.getElementById('async-demo__wait')
       if (show) {
@@ -59,11 +61,10 @@
         waitDiv.style.display = 'none'
       }
     }
-    const getTodosButton = document.getElementById('async-demo__get-todos-button')
-    getTodosButton.addEventListener('click', (ev) => {
-      fetchApi(true)
-      toggleWait(true)
-       function fetchApi (inUse) {fetch('http://localhost:4000/api/items').then(
+    // fetch n render items
+    function fetchApi (inUse) {
+        toggleWait(true) 
+        fetch('http://localhost:4000/api/items').then(
         (response) => {
           return response.json()
         }
@@ -118,7 +119,10 @@
       ).catch(reason => alert(reason))
       .finally(() => toggleWait(false))
     }
-
+    const getTodosButton = document.getElementById('async-demo__get-todos-button')
+    getTodosButton.addEventListener('click', (ev) => {
+      fetchApi(true)
+    })
     const addTodoForm = document.getElementById('async-demo__add-todo-form')
     addTodoForm.addEventListener('submit', (ev) => {
       ev.preventDefault()
@@ -144,7 +148,6 @@
       }).catch(reason => alert(reason))
       .finally(() => toggleWait(false))
     })
-  })
   </script>
 </body>
 </html>
