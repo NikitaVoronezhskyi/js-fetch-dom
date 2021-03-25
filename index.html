@@ -93,12 +93,14 @@
                   })
                   if (result===true) {
                     return fetchDelete
+                    .then(fetchApi)
                   }
                   
               // TODO если result === true -
               // выполнить fetch с методом delete и шаблоном адреса:
               // http://localhost:4000/api/items/{id}
             })
+
 
             todoTitleH4.innerText = "Title: "+ todo.title
             todoDescriptionP.innerText = "Description: "+ todo.description
@@ -136,6 +138,7 @@
         return response.json()
       }).then(responseBody => {
         alert(responseBody.message)
+        fetchApi(true)
         // TODO здесь тоже вызвать функцию получения и вывода на страницу
         // всех задачек
       }).catch(reason => alert(reason))
